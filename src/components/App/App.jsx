@@ -30,7 +30,6 @@ class App extends Component {
       alert(contactUniq + 'is alrady in contacts.')
     }
   };
-
     
   handleFilter = event => {
     this.setState({
@@ -44,6 +43,30 @@ class App extends Component {
         contacts: prevState.contacts.filter(item => item.id !== id)
       }));
   };
+
+  componentDidMount() {
+    console.log('App componentDidMount'); 
+    const contactList = localStorage.getItem('contacts');
+    const parsedContact = JSON.parse(contactList);
+
+    if (parsedContact) {
+      this.setState({
+        contacts: parsedContact
+      });
+    }
+
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log('App componentDidUpdate');
+
+    if (this.state.contacts !== prevState.contacts) {
+      console.log('Update row');
+
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+    
+  }
   
   render() {
     const { contacts, filter } = this.state;
